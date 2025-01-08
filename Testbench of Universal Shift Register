@@ -1,0 +1,52 @@
+module shi_reg_tb; 
+    
+    reg clk; 
+    reg reset_n; 
+    reg [1:0] select; 
+    reg [3:0] p_din; 
+    reg s_left_din; 
+    reg s_right_din; 
+    wire [3:0] p_dout; 
+ 
+    shi_reg_rtl dut ( 
+        .clk(clk), 
+        .reset_n(reset_n), 
+        .select(select), 
+        .p_din(p_din), 
+        .s_left_din(s_left_din), 
+        .s_right_din(s_right_din), 
+        .p_dout(p_dout) 
+    );  
+    always #5 clk = ~clk;   
+    initial begin   
+        clk = 0; 
+        reset_n = 0; 
+        select = 2'b00; 
+        p_din = 4'b0000; 
+        s_left_din = 0; 
+        s_right_din = 0;       
+        #10 reset_n = 1; 
+        #10;    
+        p_din = 4'b1011; 
+        select = 2'b11;  
+        #10;      
+        select = 2'b01;  
+        s_left_din = 1; 
+        #10;        
+select = 2'b10;  
+s_right_din = 0; 
+#10;         
+select = 2'b00;  
+#10;  
+p_din = 4'b1111; 
+select = 2'b11;  
+#10; 
+select = 2'b01; 
+s_left_din = 0; 
+#10;     
+select = 2'b10; 
+s_right_din = 1; 
+#10;         
+$stop; 
+end 
+endmodule 
